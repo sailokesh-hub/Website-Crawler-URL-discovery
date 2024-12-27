@@ -50,6 +50,10 @@ https://zalando.com`;
     }
   };
 
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div className="app">
       <nav className="navbar">
