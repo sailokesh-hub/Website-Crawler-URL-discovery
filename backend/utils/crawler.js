@@ -27,17 +27,10 @@ const crawlWithPuppeteer = async (url, patterns) => {
     const productURLs = new Set();
 
     const browser = await puppeteer.launch({
-        args: [
-          "--disable-setuid-sandbox",
-          "--no-sandbox",
-          "--single-process",
-          "--no-zygote",
-        ],
-        executablePath:
-          process.env.NODE_ENV === "production"
-            ? process.env.PUPPETEER_EXECUTABLE_PATH
-            : puppeteer.executablePath(),
-      });
+        headless: true,
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // Use custom Chrome path
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required for cloud environments
+    });
     const page = await browser.newPage();
 
     try {
