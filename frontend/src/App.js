@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import './App.css'
 
 const USER_AGENTS = [
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -17,6 +18,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     try {
       const { data } = await axios.post(
         "https://website-crawler-url-discovery-1.onrender.com/api/crawler/crawl",
@@ -30,7 +32,6 @@ const App = () => {
           },
         }
       );
-      setShowPopup(true);
       setResults(data);
       
     } catch (error) {
