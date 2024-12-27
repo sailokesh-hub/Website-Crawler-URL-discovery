@@ -3,6 +3,7 @@ const { extractProductURLs, crawlWithPuppeteer } = require('../utils/crawler');
 const productPatterns = ['/product', '/item', '/p'];
 
 const crawlEcommerceSites = async (req, res) => {
+    console.log("request recieved");
     const { domains } = req.body;
 
     if (!domains || !Array.isArray(domains)) {
