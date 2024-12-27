@@ -6,9 +6,11 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-# Install project dependencies
+# Copy both package.json and package-lock.json
 COPY package*.json ./
-RUN npm ci
+
+# Install dependencies using npm ci if lock file exists, fallback to npm install
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 # Copy application code
 COPY . .
@@ -17,4 +19,4 @@ COPY . .
 EXPOSE 3000
 
 # Ensure Chrome is accessible and start the Node.js application
-CMD ["/bin/sh", "-c", "/usr/bin/google-chrome-stable --version && nodemon app.js"]
+CMD ["/bin/sh", "-c", "/usr/bin/google-chrome-stable --version && node app.js"]
