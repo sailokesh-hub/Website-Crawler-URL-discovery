@@ -58,7 +58,7 @@ https://zalando.com`;
       <div className="container">
         <h2 className="main-heading">E-commerce URL Crawler</h2>
         <form onSubmit={handleSubmit} className="form">
-        <label htmlFor="textarea"> Enter URL of your choice below</label>
+          <label htmlFor="textarea"> Enter URL of your choice below</label>
           <textarea
             placeholder="Enter domains (one per line)"
             value={domains}
@@ -99,6 +99,20 @@ https://zalando.com`;
                 </table>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Success Popup */}
+        {showPopup && (
+          <div className="popup">
+            <div className="popup-content">
+              <span className="close" onClick={closePopup}>
+                ×
+              </span>
+              <h2>Success!</h2>
+              <p>URLs have been successfully fetched.</p>
+              <button onClick={closePopup}>Close</button>
+            </div>
           </div>
         )}
       </div>
