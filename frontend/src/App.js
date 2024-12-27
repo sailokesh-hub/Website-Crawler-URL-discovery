@@ -3,16 +3,16 @@ import axios from "axios";
 import "./App.css";
 
 const App = () => {
-  const initialDomains = `www.amazon.com
-www.ebay.com
-www.alibaba.com
-www.walmart.com
-www.target.com
-www.bestbuy.com
-www.flipkart.com
-www.shopify.com
-www.etsy.com
-www.zalando.com`;
+  const initialDomains = `https://amazon.com
+https://ebay.com
+https://alibaba.com
+https://www.walmart.com
+https://target.com
+https://bestbuy.com
+https://flipkart.com
+https://shopify.com
+https://etsy.com
+https://zalando.com`;
   const [domains, setDomains] = useState("");
   const [results, setResults] = useState(null);
 
