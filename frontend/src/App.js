@@ -8,27 +8,19 @@ const App = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Prepare the list of domains
-        const domainList = domains.split('\n').map(domain => domain.trim()).filter(domain => domain);
-    
         try {
-            const { data } = await axios.post(
-                'https://website-crawler-url-discovery-1.onrender.com/api/crawler/crawl',
-                { domains: domainList },
-                {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', // Mozilla User-Agent
-                    }
-                }
-            );
-    
+            const { data } = await axios.post('https://website-crawler-url-discovery-1.onrender.com/api/crawler/crawl', {
+                domains: domains.split('\n'),
+            },{
+                headers: {
+                    'User-Agent': 'Mozilla/5.0',
+                },
+            });
             setResults(data);
         } catch (error) {
-            console.error('Error fetching data:', error.message);
+            console.error('Error fetching data', error);
         }
     };
-    
 
     return (
         <div className="app">

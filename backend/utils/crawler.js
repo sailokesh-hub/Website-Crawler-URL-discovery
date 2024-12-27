@@ -26,9 +26,9 @@ const crawlWithPuppeteer = async (url, patterns) => {
     const productURLs = new Set();
 
     const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+});
     const page = await browser.newPage();
 
     try {
