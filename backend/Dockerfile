@@ -6,9 +6,14 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
-# Install necessary Chrome dependencies
+# Add the Google Chrome repository and install necessary dependencies
 RUN apt-get update && apt-get install -y \
     wget \
+    gnupg \
+    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update && apt-get install -y \
+    google-chrome-stable \
     fonts-liberation \
     libappindicator3-1 \
     libasound2 \
@@ -24,7 +29,6 @@ RUN apt-get update && apt-get install -y \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    google-chrome-stable \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
@@ -35,5 +39,8 @@ RUN npm ci
 # Copy application code
 COPY . .
 
-# Start the application
-CMD [ "nodemon", "app.js" ]
+# Expose the application port
+EXPOSE 3000
+
+# Ensure Chrome is accessible and start the Node.js application
+CMD ["/bin/sh", "-c", "/usr/bin/google-chrome-stable --version && nodemon app.js"]
