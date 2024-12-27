@@ -5,7 +5,7 @@ require('dotenv').config()
 const crawlerRoutes = require('./routes/crawler');
 app.use(express.json());
 app.use(cors({
-    origin: 'https://website-crawler-url-discovery.onrender.com' // Replace with your frontend's origin
+    origin: 'true' // Replace with your frontend's origin
 }))
 app.use('/api/crawler', crawlerRoutes);
 const PORT = process.env.PORT || 3001;
