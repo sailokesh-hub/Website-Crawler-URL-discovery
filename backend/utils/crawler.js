@@ -22,31 +22,28 @@ const extractProductURLs = async (url, patterns) => {
     return Array.from(productURLs);
 };
 
-const crawlWithPuppeteer = async (url, patterns) => {
-    const productURLs = new Set();
-
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
+const crawlWithPuppeteer = async (url) => {
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' });
-
-        // Extract dynamically loaded content
-        const links = await page.evaluate(() =>
-            Array.from(document.querySelectorAll('a')).map(a => a.href)
-        );
-
-        links.forEach(link => {
-            if (patterns.some(pattern => link.includes(pattern))) {
-                productURLs.add(link);
-            }
+        // Connect to Browserless
+        const browser = await puppeteer.connect({
+            browserWSEndpoint: 'wss://chrome.browserless.io/',
         });
+
+        const page = await browser.newPage();
+        await page.goto(url, { waitUntil: 'networkidle2' }); // Wait for the page to fully load
+
+        // Perform scraping or URL extraction here
+        const productUrls = await page.evaluate(() => {
+            return Array.from(document.querySelectorAll('a[href*="/product/"]'))
+                .map((anchor) => anchor.href);
+        });
+
+        await browser.close(); // Always close the browser after use
+        return productUrls;
     } catch (error) {
-        console.error(`Error loading page with Puppeteer: ${url}`, error.message);
-    } finally {
-        await browser.close();
+        console.error('Error during crawling:', error.message);
+        return [];
     }
-    return Array.from(productURLs);
 };
 
 module.exports = { extractProductURLs, crawlWithPuppeteer };
