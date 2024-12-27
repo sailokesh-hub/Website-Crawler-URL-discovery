@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 # Install Node.js dependencies
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm install
 
 # Copy application code
 COPY . .
