@@ -15,6 +15,7 @@ https://etsy.com
 https://zalando.com`;
   const [domains, setDomains] = useState("");
   const [results, setResults] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     // Set the initial domains in the text area
@@ -43,6 +44,7 @@ https://zalando.com`;
         }
       );
       setResults(data);
+      setShowPopup(true);
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -56,6 +58,7 @@ https://zalando.com`;
       <div className="container">
         <h2 className="main-heading">E-commerce URL Crawler</h2>
         <form onSubmit={handleSubmit} className="form">
+        <label htmlFor="textarea"> Enter URL of your choice below</label>
           <textarea
             placeholder="Enter domains (one per line)"
             value={domains}
