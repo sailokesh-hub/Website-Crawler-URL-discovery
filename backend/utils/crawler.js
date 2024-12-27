@@ -22,28 +22,34 @@ const extractProductURLs = async (url, patterns) => {
     return Array.from(productURLs);
 };
 
-const crawlWithPuppeteer = async (url) => {
+const crawlWithPuppeteer = async (url, patterns) => {
+    const productURLs = new Set();
+
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+    const page = await browser.newPage();
+
     try {
-        // Connect to Browserless
-        const browser = await puppeteer.connect({
-            browserWSEndpoint: 'wss://chrome.browserless.io/',
+        await page.goto(url, { waitUntil: 'networkidle2' });
+
+        // Extract dynamically loaded content
+        const links = await page.evaluate(() =>
+            Array.from(document.querySelectorAll('a')).map(a => a.href)
+        );
+
+        links.forEach(link => {
+            if (patterns.some(pattern => link.includes(pattern))) {
+                productURLs.add(link);
+            }
         });
-
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' }); // Wait for the page to fully load
-
-        // Perform scraping or URL extraction here
-        const productUrls = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('a[href*="/product/"]'))
-                .map((anchor) => anchor.href);
-        });
-
-        await browser.close(); // Always close the browser after use
-        return productUrls;
     } catch (error) {
-        console.error('Error during crawling:', error.message);
-        return [];
+        console.error(`Error loading page with Puppeteer: ${url}`, error.message);
+    } finally {
+        await browser.close();
     }
+    return Array.from(productURLs);
 };
 
 module.exports = { extractProductURLs, crawlWithPuppeteer };
