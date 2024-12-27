@@ -9,7 +9,7 @@ const App = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('http://localhost:3001/api/crawler/crawl', {
+            const { data } = await axios.post('https://website-crawler-url-discovery-1.onrender.com/api/crawler/crawl', {
                 domains: domains.split('\n'),
             });
             setResults(data);
