@@ -3,8 +3,8 @@ const { extractProductURLs, crawlWithPuppeteer } = require('../utils/crawler');
 const productPatterns = ['/product', '/item', '/p'];
 
 const crawlEcommerceSites = async (req, res) => {
-    console.log("request recieved");
     const { domains } = req.body;
+    console.log("request recieved")
 
     if (!domains || !Array.isArray(domains)) {
         return res.status(400).json({ error: 'Invalid domains input' });

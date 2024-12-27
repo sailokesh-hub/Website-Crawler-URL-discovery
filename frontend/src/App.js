@@ -11,10 +11,6 @@ const App = () => {
         try {
             const { data } = await axios.post('https://website-crawler-url-discovery-1.onrender.com/api/crawler/crawl', {
                 domains: domains.split('\n'),
-            },{
-                headers: {
-                    'User-Agent': 'Mozilla/5.0',
-                },
             });
             setResults(data);
         } catch (error) {

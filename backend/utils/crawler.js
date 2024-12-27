@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+require("dotenv").config();
 
 const extractProductURLs = async (url, patterns) => {
     const productURLs = new Set();
@@ -26,9 +27,17 @@ const crawlWithPuppeteer = async (url, patterns) => {
     const productURLs = new Set();
 
     const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-});
+        args: [
+          "--disable-setuid-sandbox",
+          "--no-sandbox",
+          "--single-process",
+          "--no-zygote",
+        ],
+        executablePath:
+          process.env.NODE_ENV === "production"
+            ? process.env.PUPPETEER_EXECUTABLE_PATH
+            : puppeteer.executablePath(),
+      });
     const page = await browser.newPage();
 
     try {
