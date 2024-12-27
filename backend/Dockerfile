@@ -28,4 +28,4 @@ USER pptruser
 EXPOSE 3000
 
 # Verify Chrome installation and start the Node.js app
-CMD ["/bin/sh", "-c", "google-chrome-stable --version && node app.js"]
+CMD ["google-chrome-stable --version && node app.js"]
